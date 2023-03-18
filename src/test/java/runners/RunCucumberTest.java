@@ -26,8 +26,15 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests{
     public void envProperties(){
         BaseTest baseTest = new BaseTest();
         try {
-            String envDir = String.format("src/test/resources/properties/%s.properties",System.getProperty("env"));
+            String envDir = String.format("src/test/resources/properties/environments/%s.properties",System.getProperty("env"));
             baseTest.properties.load(new FileReader( envDir));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+            String endpointDir = "src/test/resources/properties/endpoints.properties";
+            baseTest.endpoints.load(new FileReader( endpointDir));
         }catch(Exception e){
             e.printStackTrace();
         }
