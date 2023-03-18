@@ -10,7 +10,7 @@ import util.BaseTest;
 import java.io.FileReader;
 import java.util.Properties;
 
-@CucumberOptions(tags = "@login",
+@CucumberOptions(tags = "@sample",
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
         plugin = {"pretty", "html:target/cucumber-htmlreport"})
