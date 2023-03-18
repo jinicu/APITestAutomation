@@ -25,14 +25,14 @@ public class Login extends BaseTest {
         }else{
             assignValueJson("password","");
         }
-        payload = jsonPayload.toString();
+        payload.set( jsonPayload.get().toString());
     }
 
     @And("^user email and password of user: (.*)$")
     public void addValidCredLoginPayload(String user){
         assignValueJson("email", emailMap.get(user));
         assignValueJson("password", passwordMap.get(user));
-        payload = jsonPayload.toString();
+        payload.set( jsonPayload.get().toString());
     }
 
 }

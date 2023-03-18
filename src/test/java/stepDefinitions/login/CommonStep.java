@@ -13,7 +13,7 @@ public class CommonStep extends BaseTest {
 
     @Given("^request url with endpoint: (.*)$")
     public void getUrlEndpoint(String urlEndpoint){
-        endpoint = endpoints.getProperty(urlEndpoint);
+        endpoint.set( endpoints.getProperty(urlEndpoint));
     }
 
     @And("^request payload: (.*)$")
@@ -28,7 +28,7 @@ public class CommonStep extends BaseTest {
 
     @Then("^response status code result should be: (.*)$")
     public void verifyStatusCode(int statusCode){
-        Assert.assertEquals(responseCode, statusCode, "Response Status Code is Incorrect");
+        Assert.assertEquals(responseCode.get(), statusCode, "Response Status Code is Incorrect");
     }
 
     @And("^response body contains: (.*)$")

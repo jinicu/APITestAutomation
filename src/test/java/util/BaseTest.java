@@ -56,9 +56,8 @@ public class BaseTest extends API{
 
     public void readJSONPayload(String reqPayload){
         try {
-            jsonPayload = (JsonObject) Json.parse(new FileReader(
-                    String.format("src/test/resources/payloads/%s.json", reqPayload)
-            ));
+            jsonPayload.set((JsonObject) Json.parse(new FileReader(
+                    String.format("src/test/resources/payloads/%s.json", reqPayload))));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -67,7 +66,7 @@ public class BaseTest extends API{
 
     public void assignValueJson(String keyName, String value){
         String[] keyNameDir = keyName.split("[.]");
-        JsonObject keyHolder = jsonPayload;
+        JsonObject keyHolder = jsonPayload.get();
 
         for(int i = 0; i < keyNameDir.length; i++){
             String[] keyDir = keyNameDir[i].split("[(]");
@@ -83,18 +82,18 @@ public class BaseTest extends API{
 
     public JsonValue getJsonResponseValue(String keyName){
         String[] keyNameDir = keyName.split("[.]");
-        JsonObject keyHolder = jsonResponseBody;
+        ThreadLocal<JsonObject> keyHolder = jsonResponseBody;
 
         for(int i = 0; i < keyNameDir.length; i++){
             String[] keyDir = keyNameDir[i].split("[(]");
-            if(keyHolder.get(keyDir[0]) instanceof JsonObject){
-                keyHolder = (JsonObject) keyHolder.get(keyDir[0]);
-            } else if (keyHolder.get(keyDir[0]) instanceof JsonArray) {
-                keyHolder = (JsonObject) ((JsonArray) keyHolder
-                        .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", "")));
+            if(keyHolder.get().get(keyDir[0]) instanceof JsonObject){
+                keyHolder.set( (JsonObject) keyHolder.get().get(keyDir[0]));
+            } else if (keyHolder.get().get(keyDir[0]) instanceof JsonArray) {
+                keyHolder.set((JsonObject) ((JsonArray) keyHolder.get()
+                        .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", ""))));
             }
         }
-        return keyHolder.get(keyNameDir[keyNameDir.length-1]);
+        return keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
     }
 
     public List<String[]> responseValidatorData(String responseValues){

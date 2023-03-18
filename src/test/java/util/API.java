@@ -14,38 +14,33 @@ import java.util.Properties;
 
 public class API {
     public static final Properties properties = new Properties();
-
     public static final Properties endpoints = new Properties();
-
-    public static String endpoint;
-
-    public static JsonObject jsonPayload;
-
-    public static String payload;
-    public static JsonObject jsonResponseBody;
-
-    public static int responseCode;
+    public static ThreadLocal<String> endpoint = new ThreadLocal<>();
+    public static ThreadLocal<JsonObject> jsonPayload = new ThreadLocal<>();
+    public static ThreadLocal<String> payload = new ThreadLocal<>();
+    public static ThreadLocal<JsonObject> jsonResponseBody = new ThreadLocal<>();
+    public static ThreadLocal<Integer> responseCode = new ThreadLocal<>();
 
     public void apiRequest(String requestMethod){
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(properties.getProperty("baseUrl").concat(endpoint));
+            URL url = new URL(properties.getProperty("baseUrl").concat(endpoint.get()));
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(requestMethod);
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
-            if(!(payload == null)){
-                byte[] out = payload.getBytes(Charset.forName("UTF-8"));
+            if(!(payload.get() == null)){
+                byte[] out = payload.get().getBytes(Charset.forName("UTF-8"));
                 OutputStream stream = connection.getOutputStream();
                 stream.write(out);
             }
-            responseCode = connection.getResponseCode();
-            jsonResponseBody = (JsonObject) Json.parse(getResponse(connection));
+            responseCode.set(connection.getResponseCode());
+            jsonResponseBody.set((JsonObject) Json.parse(getResponse(connection)));
         }catch(Exception e){
             e.printStackTrace();
         }finally{
             connection.disconnect();
-            payload = null;
+            payload.set(null);
         }
 
     }
