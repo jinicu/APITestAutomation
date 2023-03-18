@@ -10,7 +10,7 @@ import util.BaseTest;
 import java.io.FileReader;
 import java.util.Properties;
 
-@CucumberOptions(tags = "@sample",
+@CucumberOptions(tags = "@login",
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
         plugin = {"pretty", "html:target/cucumber-htmlreport"})
@@ -26,8 +26,15 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests{
     public void envProperties(){
         BaseTest baseTest = new BaseTest();
         try {
-            String envDir = String.format("src/test/resources/properties/%s.properties",System.getProperty("env"));
+            String envDir = String.format("src/test/resources/properties/environments/%s.properties",System.getProperty("env"));
             baseTest.properties.load(new FileReader( envDir));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+            String endpointDir = "src/test/resources/properties/endpoints.properties";
+            baseTest.endpoints.load(new FileReader( endpointDir));
         }catch(Exception e){
             e.printStackTrace();
         }
