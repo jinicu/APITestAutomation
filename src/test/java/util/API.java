@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class API {
@@ -23,6 +24,8 @@ public class API {
     public static ThreadLocal<String> payload = new ThreadLocal<>();
     public static ThreadLocal<JsonObject> jsonResponseBodyMem = new ThreadLocal<>();
     public static ThreadLocal<JsonObject> jsonResponseBody = new ThreadLocal<>();
+
+    public static ThreadLocal<Map<String, JsonObject>> responseBodyMem = new ThreadLocal<>();
     public static ThreadLocal<Integer> responseCode = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> headers = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> parameters = new ThreadLocal<>();

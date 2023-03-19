@@ -91,6 +91,16 @@ public class BaseTest extends API{
         }
     }
 
+    public void storeResponseBody(String responseKey, JsonObject jsonRes){
+        if(responseBodyMem.get() == null){
+            Map<String, JsonObject> res = new HashMap<>();
+            res.put(responseKey, jsonRes);
+            responseBodyMem.set(res);
+        }else{
+            responseBodyMem.get().put(responseKey, jsonRes);
+        }
+    }
+
     public void assignValueJson(String keyName, String value){
         String[] keyNameDir = keyName.split("[.]");
         JsonObject keyHolder = jsonPayload.get();
@@ -123,7 +133,31 @@ public class BaseTest extends API{
             }
         }
         valueKey = keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
+        if(valueKey == null){
+            valueKey = keyHolder.get();
+        }
         jsonResponseBody.set(jsonResponseBodyMem.get());
+        return valueKey;
+    }
+
+    public JsonValue getJsonValue(JsonObject objectJson, String keyName){
+        String[] keyNameDir = keyName.split("[.]");
+        JsonValue valueKey;
+        JsonObject keyHolder = objectJson;
+
+        for(int i = 0; i < keyNameDir.length; i++){
+            String[] keyDir = keyNameDir[i].split("[(]");
+            if(keyHolder.get(keyDir[0]) instanceof JsonObject){
+                keyHolder = (JsonObject) keyHolder.get(keyDir[0]);
+            } else if (keyHolder.get(keyDir[0]) instanceof JsonArray) {
+                keyHolder =(JsonObject) ((JsonArray) keyHolder.get(keyDir[0]))
+                        .get(Integer.valueOf(keyDir[1].replace(")", "")));
+            }
+        }
+        valueKey = keyHolder.get(keyNameDir[keyNameDir.length-1]);
+        if(valueKey == null){
+            valueKey = keyHolder;
+        }
         return valueKey;
     }
 
@@ -135,7 +169,6 @@ public class BaseTest extends API{
         }
         return keyVal;
     }
-
 
 
 }
