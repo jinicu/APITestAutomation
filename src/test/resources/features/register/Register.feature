@@ -1,4 +1,4 @@
-@apiTest @register @TOKEN
+@APITEST @register @TOKEN
 Feature: Application Registration Tests
 
   Scenario Outline: Successful Registration <TCID>

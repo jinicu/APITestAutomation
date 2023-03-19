@@ -1,4 +1,4 @@
-@apiTest @listResources
+@APITEST @listResources
 Feature: List Resources Test
 
   Scenario Outline: List Resources Requests <TCID>

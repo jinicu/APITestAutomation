@@ -1,4 +1,4 @@
-@apiTest @login @TOKEN
+@APITEST @login @TOKEN
 Feature: Application Login Tests
 
   Scenario Outline: Successful Login <TCID>

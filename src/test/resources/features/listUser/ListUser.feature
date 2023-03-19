@@ -1,4 +1,4 @@
-@apiTest @listUser
+@APITEST @listUser
 Feature: List Users Test
 
 
@@ -66,18 +66,18 @@ Feature: List Users Test
       | listUser   | /23  | GET           | 404          | data(0).id~null      | TC00017    |
       | listUser   | /50  | GET           | 404          | data(0).id~null      | TC00018    |
 
-    Scenario Outline: Create user <TCID>
-      Given request url with endpoint: <endpoint>
-      And request payload: <payload> with file type: json
-      And assign json payload values: <payloadValues>
-      When user send request with method: <requestMethod>
-      Then response status code result should be: <responseCode>
-      And response body contains keys with value: <responseBody>
+  Scenario Outline: Create user <TCID>
+    Given request url with endpoint: <endpoint>
+    And request payload: <payload> with file type: json
+    And assign json payload values: <payloadValues>
+    When user send request with method: <requestMethod>
+    Then response status code result should be: <responseCode>
+    And response body contains keys with value: <responseBody>
 
-      Examples:
-        | endpoint   | payload               | payloadValues                          | requestMethod | responseCode | responseBody                                              | TCID       |
-        | listUser   | listUser/create.json  | name~morpheus, job~leader              | POST          | 201          | name~morpheus, job~leader, id~notNull, createdAt~notNull  | TC00029    |
-  @test
+    Examples:
+      | endpoint   | payload               | payloadValues                          | requestMethod | responseCode | responseBody                                              | TCID       |
+      | listUser   | listUser/create.json  | name~morpheus, job~leader              | POST          | 201          | name~morpheus, job~leader, id~notNull, createdAt~notNull  | TC00029    |
+
   Scenario Outline: Update user: <Description> <TCID>
     Given request url with endpoint: <endpoint>
     And endpoint path: <path>

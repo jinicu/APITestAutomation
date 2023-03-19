@@ -5,24 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9081ad14-94df-49b7-b4ed-aacdbe589e68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/listResources/ListResources.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/login/Login.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/features/register/Register.feature" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/payloads/listUser/create.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/payloads/register/register.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listResources/listResources.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listResources/singleResource/2.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listResources/singleResource/3.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/ListUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/ListUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/hooks/Hooks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/hooks/Hooks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/runners/RunCucumberTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/runners/RunCucumberTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/util/API.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/API.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/features/listUser/listUser.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/listUser/ListUser.feature" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/features/login/loginTest.feature" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/properties/endpoints.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/properties/endpoints.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/testData/envtd.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/testData/envtd.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/listResources/ListResources.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/listResources/ListResources.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/listUser/ListUser.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/listUser/ListUser.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/login/Login.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/login/Login.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/register/Register.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/register/Register.feature" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +48,10 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/jirom/IdeaProjects/APITestAutomation/src/test/resources/features/register"
+    "last_opened_file_path": "C:/Users/jirom/IdeaProjects/APITestAutomation/src/test/resources/features/register",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
   <component name="RecentsManager">
