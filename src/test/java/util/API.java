@@ -8,8 +8,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class API {
@@ -18,32 +24,80 @@ public class API {
     public static ThreadLocal<String> endpoint = new ThreadLocal<>();
     public static ThreadLocal<JsonObject> jsonPayload = new ThreadLocal<>();
     public static ThreadLocal<String> payload = new ThreadLocal<>();
+    public static ThreadLocal<JsonObject> jsonResponseBodyMem = new ThreadLocal<>();
     public static ThreadLocal<JsonObject> jsonResponseBody = new ThreadLocal<>();
+
+    public static ThreadLocal<Map<String, JsonObject>> responseBodyMem = new ThreadLocal<>();
     public static ThreadLocal<Integer> responseCode = new ThreadLocal<>();
+    public static ThreadLocal<List<String[]>> headers = new ThreadLocal<>();
+    public static ThreadLocal<List<String[]>> parameters = new ThreadLocal<>();
 
     public void apiRequest(String requestMethod){
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(properties.getProperty("baseUrl").concat(endpoint.get()));
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod(requestMethod);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/json");
-            if(!(payload.get() == null)){
-                byte[] out = payload.get().getBytes(Charset.forName("UTF-8"));
-                OutputStream stream = connection.getOutputStream();
-                stream.write(out);
+        String urlString = properties.getProperty("baseUrl").concat(endpoint.get());
+        if(!(parameters.get() == null)) {
+            String[] param;
+            for(int i = 0; i < parameters.get().size(); i++){
+                param = parameters.get().get(i);
+                if(i == 0){
+                    urlString = urlString.concat(String.format("?%s=%s", param[0], param[1]));
+                }else{
+                    urlString = urlString.concat(String.format("&%s=%s", param[0], param[1]));
+                }
             }
-            responseCode.set(connection.getResponseCode());
-            jsonResponseBody.set((JsonObject) Json.parse(getResponse(connection)));
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            connection.disconnect();
-            payload.set(null);
         }
+        if(!requestMethod.equals("PATCH")) {
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(urlString);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod(requestMethod);
+                connection.setDoOutput(true);
+                if (!(headers.get() == null)) {
+                    for (String[] head : headers.get()) {
+                        connection.setRequestProperty(head[0].trim(), head[1].trim());
+                    }
+                }
+                if (!(payload.get() == null)) {
+                    byte[] out = payload.get().getBytes(Charset.forName("UTF-8"));
+                    OutputStream stream = connection.getOutputStream();
+                    stream.write(out);
+                }
+                responseCode.set(connection.getResponseCode());
+                jsonResponseBody.set((JsonObject) Json.parse(getResponse(connection)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            } finally {
+                connection.disconnect();
+            }
+        }else{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(urlString));
+            if (!(headers.get() == null)) {
+                for (String[] head : headers.get()) {
+                    requestBuilder.headers(head[0].trim(), head[1].trim());
+                }
+                requestBuilder.method(requestMethod, HttpRequest.BodyPublishers.ofString(payload.get()));
+                HttpRequest request = requestBuilder.build();
+                HttpResponse<String> response;
+                try {
+                    response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                responseCode.set(response.statusCode());
+                jsonResponseBody.set((JsonObject) Json.parse(response.body()));
+            }
+        }
+        payload.set(null);
+        headers.set(null);
+        parameters.set(null);
 
     }
+
 
     public String getResponse(HttpURLConnection connection) throws IOException {
         BufferedReader br;

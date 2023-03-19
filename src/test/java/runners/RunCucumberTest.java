@@ -13,7 +13,7 @@ import java.util.Properties;
 @CucumberOptions(tags = "@sample",
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        plugin = {"pretty", "html:target/cucumber-htmlreport"})
+        plugin = {"pretty", "html:target/report/cucumber-report.html"})
 public class RunCucumberTest extends AbstractTestNGCucumberTests{
 
     @Override
@@ -39,4 +39,5 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests{
             e.printStackTrace();
         }
     }
+
 }

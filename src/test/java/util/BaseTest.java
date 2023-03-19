@@ -54,17 +54,54 @@ public class BaseTest extends API{
 
     }
 
-    public void readJSONPayload(String reqPayload){
+    public void readPayloadFile(String reqPayload, String fileType ){
         try {
-            jsonPayload.set((JsonObject) Json.parse(new FileReader(
-                    String.format("src/test/resources/payloads/%s.json", reqPayload))));
+            if(fileType.equalsIgnoreCase("json")){
+                jsonPayload.set((JsonObject) Json.parse(new FileReader(
+                     String.format("src/test/resources/payloads/%s", reqPayload))));
+                payload.set(jsonPayload.get().toString());
+                String[] contType = {"Content-Type", "application/json"};
+                setHeader(contType);
+            } else if (fileType.equalsIgnoreCase("text")) {
+                payload.set(new FileReader(String.format("src/test/resources/payloads/%s", reqPayload)).toString());
+                String[] contType = {"Content-Type", "text/plain"};
+                setHeader(contType);
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
-
     }
 
-    public void assignValueJson(String keyName, String value){
+    public JsonObject readJSONResponseFile(String expectedResponse){
+        try {
+            return (JsonObject) Json.parse(new FileReader(
+                    String.format("src/test/resources/responses/%s", expectedResponse)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setHeader(String[] head){
+        List<String[]> header = new ArrayList<>();
+        header.add(head);
+        if(headers.get() == null){
+            headers.set(header);
+        }else{
+            headers.get().add(head);
+        }
+    }
+
+    public void storeResponseBody(String responseKey, JsonObject jsonRes){
+        if(responseBodyMem.get() == null){
+            Map<String, JsonObject> res = new HashMap<>();
+            res.put(responseKey, jsonRes);
+            responseBodyMem.set(res);
+        }else{
+            responseBodyMem.get().put(responseKey, jsonRes);
+        }
+    }
+
+    public void assignValueJsonPayload(String keyName, String value){
         String[] keyNameDir = keyName.split("[.]");
         JsonObject keyHolder = jsonPayload.get();
 
@@ -82,26 +119,73 @@ public class BaseTest extends API{
 
     public JsonValue getJsonResponseValue(String keyName){
         String[] keyNameDir = keyName.split("[.]");
+        JsonValue valueKey;
+        jsonResponseBodyMem.set(jsonResponseBody.get());
         ThreadLocal<JsonObject> keyHolder = jsonResponseBody;
-
+        String jsonType = null;
         for(int i = 0; i < keyNameDir.length; i++){
             String[] keyDir = keyNameDir[i].split("[(]");
             if(keyHolder.get().get(keyDir[0]) instanceof JsonObject){
                 keyHolder.set( (JsonObject) keyHolder.get().get(keyDir[0]));
+                jsonType = "object";
             } else if (keyHolder.get().get(keyDir[0]) instanceof JsonArray) {
+                if(keyDir.length == 1){
+                    valueKey = keyHolder.get().get(keyDir[0]);
+                    return valueKey;
+                }
                 keyHolder.set((JsonObject) ((JsonArray) keyHolder.get()
                         .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", ""))));
+                jsonType = "array";
+            } else {
+                jsonType = "string";
             }
         }
-        return keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
+        valueKey = keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
+        if((valueKey == null) && !jsonType.equals("string") && (jsonType.equals("object") || jsonType.equals("array"))){
+            valueKey = keyHolder.get();
+        }
+        jsonResponseBody.set(jsonResponseBodyMem.get());
+        return valueKey;
     }
 
-    public List<String[]> responseValidatorData(String responseValues){
-        List<String[]> resVal = new ArrayList<>();
-        String[] entries = responseValues.split(",");
-        for(String en: entries){
-            resVal.add(en.split("~"));
+    public JsonValue getJsonValue(JsonObject objectJson, String keyName){
+        String[] keyNameDir = keyName.split("[.]");
+        JsonValue valueKey;
+        JsonObject keyHolder = objectJson;
+        String jsonType = null;
+        for(int i = 0; i < keyNameDir.length; i++){
+            String[] keyDir = keyNameDir[i].split("[(]");
+            if(keyHolder.get(keyDir[0]) instanceof JsonObject){
+                keyHolder = (JsonObject) keyHolder.get(keyDir[0]);
+                jsonType = "object";
+            } else if (keyHolder.get(keyDir[0]) instanceof JsonArray) {
+                if(keyDir.length == 1){
+                    valueKey = keyHolder.get(keyDir[0]);
+                    return valueKey;
+                }
+                keyHolder =(JsonObject) ((JsonArray) keyHolder.get(keyDir[0]))
+                        .get(Integer.valueOf(keyDir[1].replace(")", "")));
+                jsonType = "array";
+            }else{
+                jsonType = "string";
+            }
         }
-        return resVal;
+        valueKey = keyHolder.get(keyNameDir[keyNameDir.length-1]);
+        if((valueKey == null) && !jsonType.equals("string") && (jsonType.equals("object") || jsonType.equals("array"))){
+                valueKey = keyHolder;
+        }
+        return valueKey;
     }
+
+
+    public List<String[]> separatorKeyValue(String keysValues){
+        List<String[]> keyVal = new ArrayList<>();
+        String[] entries = keysValues.split(",");
+        for(String en: entries){
+            keyVal.add(en.split("~"));
+        }
+        return keyVal;
+    }
+
+
 }
