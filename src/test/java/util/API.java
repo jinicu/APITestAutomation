@@ -63,6 +63,7 @@ public class API {
             jsonResponseBody.set((JsonObject) Json.parse(getResponse(connection)));
         }catch(Exception e){
             e.printStackTrace();
+            throw new RuntimeException(e);
         }finally{
             connection.disconnect();
             payload.set(null);

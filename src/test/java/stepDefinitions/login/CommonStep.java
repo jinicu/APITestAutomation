@@ -56,7 +56,7 @@ public class CommonStep extends BaseTest {
         Assert.assertEquals(responseCode.get(), statusCode, "Response Status Code is Incorrect");
     }
 
-    @And("^response body contains: (.*)$")
+    @And("^response body contains keys with value: (.*)$")
     public void verifyResponseBodyValue(String responseValues){
         List<String[]> resVal = separatorKeyValue(responseValues);
         for(String[] res: resVal){
@@ -74,6 +74,44 @@ public class CommonStep extends BaseTest {
             }
         }
 
+    }
+
+    @And("^response array path: (.*) contains keys with value: (.*)$")
+    public void verifyResponseArrayContainsKeysValue(String arrayPath, String responseValues){
+        JsonArray arrayJson = (JsonArray) getJsonResponseValue(arrayPath);
+        List<String[]> resVal = separatorKeyValue(responseValues);
+        for(String[] res: resVal){
+            boolean responseContains = false;
+            for(JsonValue objRes: arrayJson){
+                if(objRes instanceof JsonObject){
+                    String value = String.valueOf(getJsonValue((JsonObject) objRes, res[0].trim()));
+                    if(!(value == null)) {
+                        if (res[1].trim().equals(value.replace("\"", "").trim())) {
+                            responseContains = true;
+                        }
+                    }
+                }
+            }
+            Assert.assertTrue(responseContains, String.format("Key: %s with Value: %s is not found", res[0], res[1]));
+        }
+    }
+
+    @And("^response body contains keys with json value: (.*)$")
+    public void verifyResponseBodyJsonValue(String responseValues){
+        List<String[]> resVal = separatorKeyValue(responseValues);
+        try {
+            for (String[] res : resVal) {
+                if (res[1].contains(".json")) {
+                    JSONAssert.assertEquals((JSONObject) JSONParser.parseJSON(String.valueOf(getJsonResponseValue(res[0]))),
+                            (JSONObject) JSONParser.parseJSON(String.valueOf(readJSONResponseFile(res[1]))), true);
+                } else {
+                    JSONAssert.assertEquals(String.valueOf(getJsonResponseValue(res[0])), String.valueOf(res[1]), true);
+                }
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     @And("^response body is equal to expected response: (.*)$")
@@ -112,5 +150,13 @@ public class CommonStep extends BaseTest {
         }
     }
 
+    @And("^assign json payload values: (.*)$")
+    public void assignJsonPayloadValues(String payloadValues){
+        List<String[]> payVarVal = separatorKeyValue(payloadValues);
+        for(String[] payV: payVarVal){
+            assignValueJsonPayload(payV[0].trim(), payV[1].trim());
+        }
+        payload.set( jsonPayload.get().toString());
+    }
 
 }

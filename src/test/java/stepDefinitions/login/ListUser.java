@@ -15,4 +15,5 @@ public class ListUser extends BaseTest {
        comStep.apiRequest("GET");
        storeResponseBody("listUser", jsonResponseBody.get());
    }
+
 }

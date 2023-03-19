@@ -58,13 +58,13 @@ public class BaseTest extends API{
         try {
             if(fileType.equalsIgnoreCase("json")){
                 jsonPayload.set((JsonObject) Json.parse(new FileReader(
-                     String.format("src/test/resources/payloads/%s.json", reqPayload))));
+                     String.format("src/test/resources/payloads/%s", reqPayload))));
                 payload.set(jsonPayload.get().toString());
                 String[] contType = {"Content-Type", "application/json"};
                 setHeader(contType);
             } else if (fileType.equalsIgnoreCase("text")) {
-                payload.set(new FileReader(String.format("src/test/resources/payloads/%s.txt", reqPayload)).toString());
-                String[] contType = {"Content-Type", "text/plaintext/plain"};
+                payload.set(new FileReader(String.format("src/test/resources/payloads/%s", reqPayload)).toString());
+                String[] contType = {"Content-Type", "text/plain"};
                 setHeader(contType);
             }
         }catch(IOException e){
@@ -75,7 +75,7 @@ public class BaseTest extends API{
     public JsonObject readJSONResponseFile(String expectedResponse){
         try {
             return (JsonObject) Json.parse(new FileReader(
-                    String.format("src/test/resources/responses/%s.json", expectedResponse)));
+                    String.format("src/test/resources/responses/%s", expectedResponse)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -101,7 +101,7 @@ public class BaseTest extends API{
         }
     }
 
-    public void assignValueJson(String keyName, String value){
+    public void assignValueJsonPayload(String keyName, String value){
         String[] keyNameDir = keyName.split("[.]");
         JsonObject keyHolder = jsonPayload.get();
 
@@ -129,6 +129,10 @@ public class BaseTest extends API{
                 keyHolder.set( (JsonObject) keyHolder.get().get(keyDir[0]));
                 jsonType = "object";
             } else if (keyHolder.get().get(keyDir[0]) instanceof JsonArray) {
+                if(keyDir.length == 1){
+                    valueKey = keyHolder.get().get(keyDir[0]);
+                    return valueKey;
+                }
                 keyHolder.set((JsonObject) ((JsonArray) keyHolder.get()
                         .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", ""))));
                 jsonType = "array";
@@ -155,6 +159,10 @@ public class BaseTest extends API{
                 keyHolder = (JsonObject) keyHolder.get(keyDir[0]);
                 jsonType = "object";
             } else if (keyHolder.get(keyDir[0]) instanceof JsonArray) {
+                if(keyDir.length == 1){
+                    valueKey = keyHolder.get(keyDir[0]);
+                    return valueKey;
+                }
                 keyHolder =(JsonObject) ((JsonArray) keyHolder.get(keyDir[0]))
                         .get(Integer.valueOf(keyDir[1].replace(")", "")));
                 jsonType = "array";
@@ -168,6 +176,7 @@ public class BaseTest extends API{
         }
         return valueKey;
     }
+
 
     public List<String[]> separatorKeyValue(String keysValues){
         List<String[]> keyVal = new ArrayList<>();

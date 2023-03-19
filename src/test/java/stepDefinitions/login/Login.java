@@ -16,22 +16,22 @@ public class Login extends BaseTest {
     @When("^user with email for: (.*) and password for: (.*)$")
     public void getUserIdentityDifferentUsernameAndPassword(String emailUID, String passwordUID){
         if(!emailUID.isEmpty()){
-            assignValueJson("email", emailMap.get(emailUID));
+            assignValueJsonPayload("email", emailMap.get(emailUID));
         }else{
-            assignValueJson("email","");
+            assignValueJsonPayload("email","");
         }
         if(!emailUID.isEmpty()){
-            assignValueJson("password", passwordMap.get(passwordUID));
+            assignValueJsonPayload("password", passwordMap.get(passwordUID));
         }else{
-            assignValueJson("password","");
+            assignValueJsonPayload("password","");
         }
         payload.set( jsonPayload.get().toString());
     }
 
     @And("^user email and password of user: (.*)$")
     public void addValidCredLoginPayload(String user){
-        assignValueJson("email", emailMap.get(user));
-        assignValueJson("password", passwordMap.get(user));
+        assignValueJsonPayload("email", emailMap.get(user));
+        assignValueJsonPayload("password", passwordMap.get(user));
         payload.set( jsonPayload.get().toString());
     }
 
