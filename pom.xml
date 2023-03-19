@@ -53,6 +53,11 @@
             <artifactId>org.apache.poi</artifactId>
             <version>4.1.2_2</version>
         </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.1</version>
+        </dependency>
 
 
     </dependencies>

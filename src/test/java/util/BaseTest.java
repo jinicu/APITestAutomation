@@ -54,14 +54,41 @@ public class BaseTest extends API{
 
     }
 
-    public void readJSONPayload(String reqPayload){
+    public void readPayloadFile(String reqPayload, String fileType ){
         try {
-            jsonPayload.set((JsonObject) Json.parse(new FileReader(
-                    String.format("src/test/resources/payloads/%s.json", reqPayload))));
+            if(fileType.equalsIgnoreCase("json")){
+                jsonPayload.set((JsonObject) Json.parse(new FileReader(
+                     String.format("src/test/resources/payloads/%s.json", reqPayload))));
+                payload.set(jsonPayload.get().toString());
+                String[] contType = {"Content-Type", "application/json"};
+                setHeader(contType);
+            } else if (fileType.equalsIgnoreCase("text")) {
+                payload.set(new FileReader(String.format("src/test/resources/payloads/%s.txt", reqPayload)).toString());
+                String[] contType = {"Content-Type", "text/plaintext/plain"};
+                setHeader(contType);
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
 
+    public JsonObject readJSONResponseFile(String expectedResponse){
+        try {
+            return (JsonObject) Json.parse(new FileReader(
+                    String.format("src/test/resources/responses/%s.json", expectedResponse)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setHeader(String[] head){
+        List<String[]> header = new ArrayList<>();
+        header.add(head);
+        if(headers.get() == null){
+            headers.set(header);
+        }else{
+            headers.get().add(head);
+        }
     }
 
     public void assignValueJson(String keyName, String value){
@@ -82,6 +109,8 @@ public class BaseTest extends API{
 
     public JsonValue getJsonResponseValue(String keyName){
         String[] keyNameDir = keyName.split("[.]");
+        JsonValue valueKey;
+        jsonResponseBodyMem.set(jsonResponseBody.get());
         ThreadLocal<JsonObject> keyHolder = jsonResponseBody;
 
         for(int i = 0; i < keyNameDir.length; i++){
@@ -93,15 +122,20 @@ public class BaseTest extends API{
                         .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", ""))));
             }
         }
-        return keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
+        valueKey = keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
+        jsonResponseBody.set(jsonResponseBodyMem.get());
+        return valueKey;
     }
 
-    public List<String[]> responseValidatorData(String responseValues){
-        List<String[]> resVal = new ArrayList<>();
-        String[] entries = responseValues.split(",");
+    public List<String[]> separatorKeyValue(String keysValues){
+        List<String[]> keyVal = new ArrayList<>();
+        String[] entries = keysValues.split(",");
         for(String en: entries){
-            resVal.add(en.split("~"));
+            keyVal.add(en.split("~"));
         }
-        return resVal;
+        return keyVal;
     }
+
+
+
 }

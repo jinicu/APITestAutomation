@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9081ad14-94df-49b7-b4ed-aacdbe589e68" name="Changes" comment="" />
+    <list default="true" id="9081ad14-94df-49b7-b4ed-aacdbe589e68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/resources/features/listUser/listUser.feature" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listUser/page2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/runners/RunCucumberTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/runners/RunCucumberTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/API.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/API.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/features/login/loginTest.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/login/loginTest.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/payloads/login.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/payloads/login/login.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/properties/endpoints.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/properties/endpoints.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,11 +59,11 @@
       <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources\payloads\login" />
+      <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources\features" />
       <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources\properties" />
       <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources\properties\environments" />
       <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources\features\login" />
-      <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\resources" />
-      <recent name="C:\Users\jirom\IdeaProjects\APITestAutomation\src\test\java" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="stepDefinitions.login" />
