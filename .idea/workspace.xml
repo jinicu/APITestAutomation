@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9081ad14-94df-49b7-b4ed-aacdbe589e68" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/ListUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listUser/singleUser/2.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/responses/listUser/singleUser/3.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/CommonStep.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/stepDefinitions/login/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/util/API.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/API.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/util/BaseTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/features/listUser/listUser.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/listUser/listUser.feature" afterDir="false" />
     </list>

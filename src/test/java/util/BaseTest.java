@@ -122,18 +122,22 @@ public class BaseTest extends API{
         JsonValue valueKey;
         jsonResponseBodyMem.set(jsonResponseBody.get());
         ThreadLocal<JsonObject> keyHolder = jsonResponseBody;
-
+        String jsonType = null;
         for(int i = 0; i < keyNameDir.length; i++){
             String[] keyDir = keyNameDir[i].split("[(]");
             if(keyHolder.get().get(keyDir[0]) instanceof JsonObject){
                 keyHolder.set( (JsonObject) keyHolder.get().get(keyDir[0]));
+                jsonType = "object";
             } else if (keyHolder.get().get(keyDir[0]) instanceof JsonArray) {
                 keyHolder.set((JsonObject) ((JsonArray) keyHolder.get()
                         .get(keyDir[0])).get(Integer.valueOf(keyDir[1].replace(")", ""))));
+                jsonType = "array";
+            } else {
+                jsonType = "string";
             }
         }
         valueKey = keyHolder.get().get(keyNameDir[keyNameDir.length-1]);
-        if(valueKey == null){
+        if((valueKey == null) && !jsonType.equals("string") && (jsonType.equals("object") || jsonType.equals("array"))){
             valueKey = keyHolder.get();
         }
         jsonResponseBody.set(jsonResponseBodyMem.get());
@@ -144,19 +148,23 @@ public class BaseTest extends API{
         String[] keyNameDir = keyName.split("[.]");
         JsonValue valueKey;
         JsonObject keyHolder = objectJson;
-
+        String jsonType = null;
         for(int i = 0; i < keyNameDir.length; i++){
             String[] keyDir = keyNameDir[i].split("[(]");
             if(keyHolder.get(keyDir[0]) instanceof JsonObject){
                 keyHolder = (JsonObject) keyHolder.get(keyDir[0]);
+                jsonType = "object";
             } else if (keyHolder.get(keyDir[0]) instanceof JsonArray) {
                 keyHolder =(JsonObject) ((JsonArray) keyHolder.get(keyDir[0]))
                         .get(Integer.valueOf(keyDir[1].replace(")", "")));
+                jsonType = "array";
+            }else{
+                jsonType = "string";
             }
         }
         valueKey = keyHolder.get(keyNameDir[keyNameDir.length-1]);
-        if(valueKey == null){
-            valueKey = keyHolder;
+        if((valueKey == null) && !jsonType.equals("string") && (jsonType.equals("object") || jsonType.equals("array"))){
+                valueKey = keyHolder;
         }
         return valueKey;
     }
