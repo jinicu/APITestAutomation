@@ -117,8 +117,13 @@ public class CommonStep extends BaseTest {
     @And("^response body is equal to expected response: (.*)$")
     public void verifyResponseEqualExpected(String expectedRes){
         try {
-            JSONAssert.assertEquals((JSONObject) JSONParser.parseJSON(String.valueOf(jsonResponseBody.get())),
-                    (JSONObject) JSONParser.parseJSON(String.valueOf(readJSONResponseFile(expectedRes))), true);
+            if(!expectedRes.equalsIgnoreCase("empty")) {
+                JSONAssert.assertEquals((JSONObject) JSONParser.parseJSON(String.valueOf(jsonResponseBody.get())),
+                        (JSONObject) JSONParser.parseJSON(String.valueOf(readJSONResponseFile(expectedRes))), true);
+            }else{
+                Assert.assertTrue(jsonResponseBody.get() == null, "Response Body is not empty and has value of: "
+                    + String.valueOf(jsonResponseBody.get()));
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

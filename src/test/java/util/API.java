@@ -3,17 +3,11 @@ package util;
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.Json;
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -45,74 +39,38 @@ public class API {
                 }
             }
         }
-        if(!requestMethod.equals("PATCH")) {
-            HttpURLConnection connection = null;
-            try {
-                URL url = new URL(urlString);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod(requestMethod);
-                connection.setDoOutput(true);
-                if (!(headers.get() == null)) {
-                    for (String[] head : headers.get()) {
-                        connection.setRequestProperty(head[0].trim(), head[1].trim());
-                    }
-                }
-                if (!(payload.get() == null)) {
-                    byte[] out = payload.get().getBytes(Charset.forName("UTF-8"));
-                    OutputStream stream = connection.getOutputStream();
-                    stream.write(out);
-                }
-                responseCode.set(connection.getResponseCode());
-                jsonResponseBody.set((JsonObject) Json.parse(getResponse(connection)));
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            } finally {
-                connection.disconnect();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(urlString));
+        if (!(headers.get() == null)) {
+            for (String[] head : headers.get()) {
+                requestBuilder.headers(head[0].trim(), head[1].trim());
             }
+        }
+        if (!(payload.get() == null)) {
+            requestBuilder.method(requestMethod, HttpRequest.BodyPublishers.ofString(payload.get()));
         }else{
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                    .uri(URI.create(urlString));
-            if (!(headers.get() == null)) {
-                for (String[] head : headers.get()) {
-                    requestBuilder.headers(head[0].trim(), head[1].trim());
-                }
-                requestBuilder.method(requestMethod, HttpRequest.BodyPublishers.ofString(payload.get()));
-                HttpRequest request = requestBuilder.build();
-                HttpResponse<String> response;
-                try {
-                    response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                responseCode.set(response.statusCode());
-                jsonResponseBody.set((JsonObject) Json.parse(response.body()));
-            }
+            requestBuilder.method(requestMethod, HttpRequest.BodyPublishers.noBody());
+        }
+
+        HttpRequest request = requestBuilder.build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        responseCode.set(response.statusCode());
+        if(!response.body().isEmpty()) {
+            jsonResponseBody.set((JsonObject) Json.parse(response.body()));
+        }else{
+            jsonResponseBody.set(null);
         }
         payload.set(null);
         headers.set(null);
         parameters.set(null);
-
-    }
-
-
-    public String getResponse(HttpURLConnection connection) throws IOException {
-        BufferedReader br;
-        if(connection.getResponseCode() >= 400){
-            br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-        }else {
-            br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line+"\n");
-        }
-        br.close();
-        return sb.toString();
     }
 
 }

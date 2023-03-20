@@ -91,3 +91,14 @@ Feature: List Users Test
       | endpoint   | path | payload               | payloadValues                          | requestMethod | responseCode | responseBody                                              | Description | TCID       |
       | listUser   | /2   | listUser/create.json  | name~morpheus, job~zion resident       | PUT           | 200          | name~morpheus, job~zion resident, updatedAt~notNull       | PUT         | TC00030    |
       | listUser   | /2   | listUser/create.json  | name~morpheus, job~zion resident       | PATCH         | 200          | name~morpheus, job~zion resident, updatedAt~notNull       | PATCH       | TC00031    |
+
+  Scenario Outline: Delete user <TCID>
+    Given request url with endpoint: <endpoint>
+    And endpoint path: <path>
+    When user send request with method: <requestMethod>
+    Then response status code result should be: <responseCode>
+    And response body is equal to expected response: <responseBody>
+
+    Examples:
+      | endpoint   | path | requestMethod | responseCode | responseBody    | TCID       |
+      | listUser   | /2   | DELETE        | 204          | empty           | TC00032    |
