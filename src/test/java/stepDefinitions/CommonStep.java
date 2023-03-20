@@ -1,4 +1,4 @@
-package stepDefinitions.login;
+package stepDefinitions;
 
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonArray;
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;

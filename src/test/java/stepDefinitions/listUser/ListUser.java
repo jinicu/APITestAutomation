@@ -1,6 +1,7 @@
-package stepDefinitions.login;
+package stepDefinitions.listUser;
 
 import io.cucumber.java.en.Given;
+import stepDefinitions.CommonStep;
 import util.BaseTest;
 
 public class ListUser extends BaseTest {
