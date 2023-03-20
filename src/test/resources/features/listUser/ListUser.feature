@@ -1,8 +1,8 @@
 @APITEST @listUser
 Feature: List Users Test
 
-
-  Scenario Outline: List User Requests <TCID>
+  @test
+  Scenario Outline: List User Requests: <Description> <TCID>
     Given request url with endpoint: <endpoint>
     And request parameters: <parameters>
     When user send request with method: <requestMethod>
@@ -10,9 +10,9 @@ Feature: List Users Test
     And response body is equal to expected response: <expectRes>
 
     Examples:
-      | endpoint   | parameters | requestMethod | responseCode | expectRes           | TCID       |
-      | listUser   | page~2     | GET           | 200          | listUser/page2.json | TC00008    |
-
+      | endpoint   | parameters | requestMethod | responseCode | expectRes           | Description          | TCID       |
+      | listUser   | page~2     | GET           | 200          | listUser/page2.json | Non Delayed Response | TC00008    |
+      | listUser   | delay~3    | GET           | 200          | listUser/delay.json | Delayed Response     | TC00033    |
 
   Scenario Outline: User is in List User Response <TCID>
     Given request url with endpoint: <endpoint>

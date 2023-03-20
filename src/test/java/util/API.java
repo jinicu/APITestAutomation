@@ -8,9 +8,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class API {
     public static final Properties properties = new Properties();
@@ -25,7 +29,7 @@ public class API {
     public static ThreadLocal<Integer> responseCode = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> headers = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> parameters = new ThreadLocal<>();
-
+    private static Logger logger = Logger.getLogger(API.class.getName());
     public void apiRequest(String requestMethod){
         String urlString = properties.getProperty("baseUrl").concat(endpoint.get());
         if(!(parameters.get() == null)) {
@@ -42,6 +46,7 @@ public class API {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(urlString));
+
         if (!(headers.get() == null)) {
             for (String[] head : headers.get()) {
                 requestBuilder.headers(head[0].trim(), head[1].trim());
@@ -52,11 +57,19 @@ public class API {
         }else{
             requestBuilder.method(requestMethod, HttpRequest.BodyPublishers.noBody());
         }
-
+        if(Boolean.parseBoolean(System.getProperty("apiTimeoutSet")) == true){
+            requestBuilder.timeout(Duration.ofMillis(Long.parseLong(System.getProperty("apiTimeoutVal"))));
+        }
         HttpRequest request = requestBuilder.build();
+
         HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch(HttpTimeoutException e){
+            logger.log(Level.INFO,
+                    String.format("HttpTimeoutException for tomeout: %s milliseconds. Try reconsider changing apiTimeoutVal"
+                            , System.getProperty("apiTimeoutVal")) );
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
