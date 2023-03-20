@@ -1,7 +1,6 @@
 @APITEST @listUser
 Feature: List Users Test
 
-  @test
   Scenario Outline: List User Requests: <Description> <TCID>
     Given request url with endpoint: <endpoint>
     And request parameters: <parameters>
