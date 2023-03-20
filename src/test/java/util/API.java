@@ -2,6 +2,7 @@ package util;
 
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.Json;
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
+import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonValue;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,6 +27,8 @@ public class API {
     public static ThreadLocal<JsonObject> jsonResponseBody = new ThreadLocal<>();
 
     public static ThreadLocal<Map<String, JsonObject>> responseBodyMem = new ThreadLocal<>();
+
+    public static ThreadLocal<Map<String, JsonValue>> responseValueMem = new ThreadLocal<>();
     public static ThreadLocal<Integer> responseCode = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> headers = new ThreadLocal<>();
     public static ThreadLocal<List<String[]>> parameters = new ThreadLocal<>();

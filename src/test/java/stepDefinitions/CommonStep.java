@@ -164,4 +164,15 @@ public class CommonStep extends BaseTest {
         payload.set( jsonPayload.get().toString());
     }
 
+    @Given("^get value of: (.*) from response$")
+    public void getValueJsonRes(String key){
+        JsonValue value = getJsonResponseValue(key);
+        storeResponseValue(key, value);
+    }
+
+    @Given("^get value of: (.*) from stored response: (.*)$")
+    public void getValueJsonResStore(String key, String jsonOKey){
+        JsonValue value = getJsonValue(responseBodyMem.get().get(jsonOKey), key);
+        storeResponseValue(key, value);
+    }
 }
