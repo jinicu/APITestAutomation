@@ -99,6 +99,7 @@ public class BaseTest extends API{
         }else{
             responseBodyMem.get().put(responseKey, jsonRes);
         }
+        jsonResponseBody.set(null);
     }
 
     public void assignValueJsonPayload(String keyName, String value){

@@ -76,6 +76,8 @@
                     </properties>
                     <systemPropertyVariables>
                         <env>env</env>
+                        <apiTimeoutSet>true</apiTimeoutSet>
+                        <apiTimeoutVal>3000</apiTimeoutVal>
                     </systemPropertyVariables>
                 </configuration>
 
