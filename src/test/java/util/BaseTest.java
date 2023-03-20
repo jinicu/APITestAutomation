@@ -102,6 +102,17 @@ public class BaseTest extends API{
         jsonResponseBody.set(null);
     }
 
+    public void storeResponseValue(String responseKey, JsonValue jsonRes){
+        if(responseValueMem.get() == null){
+            Map<String, JsonValue> res = new HashMap<>();
+            res.put(responseKey, jsonRes);
+            responseValueMem.set(res);
+        }else{
+            responseValueMem.get().put(responseKey, jsonRes);
+        }
+        jsonResponseBody.set(null);
+    }
+
     public void assignValueJsonPayload(String keyName, String value){
         String[] keyNameDir = keyName.split("[.]");
         JsonObject keyHolder = jsonPayload.get();

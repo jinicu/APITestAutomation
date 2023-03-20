@@ -13,11 +13,8 @@ public class Login extends BaseTest {
         getLoginResponse(userId);
         JsonObject loginRes = responseBodyMem.get().get("login");
         String token = getJsonValue(loginRes, "token").toString().replace("\"", "");
-        System.out.println(token);
         String[] authorization = {"Authorization", String.format("Bearer %s", token)};
         setHeader(authorization);
-        System.out.println(headers.get().get(0)[0]);
-        System.out.println(headers.get().get(0)[1]);
     }
     @Given("login for user: (.*)$")
     public void getLoginResponse(String userId){
