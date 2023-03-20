@@ -16,8 +16,15 @@ public class Hooks extends BaseTest {
 
     @After("@APITEST")
     public void clearAPIData(){
+        endpoint.set(null);
+        jsonPayload.set(null);
+        payload.set(null);
+        jsonResponseBodyMem.set(null);
         jsonResponseBody.set(null);
+        responseBodyMem.set(null);
         responseCode.set(null);
+        headers.set(null);
+        parameters.set(null);
     }
 
     @Before("@TOKEN")
